@@ -26,3 +26,20 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+.sizing {
+  height: 700px;
+}
+
+@media (max-height: 400px) {
+  .bottom {
+    font-weight: inherit;
+  }
+}
+
+@media (min-height: 400px) {
+  .bottom {
+    font-weight: bold;
+  }
+}
