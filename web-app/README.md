@@ -8,6 +8,15 @@ is developed as regular web-app.
 In (ba)sh:
 >$ BROWSER=none HOST=127.0.0.1 PORT=3002 npm start
 
+## How to build
+### Android
+
+Android build is made by gradle task ``app:webAppSync`` which builds and copies app to android assets
+
+### Web
+
+>$ REACT_APP_PUBLIC_URL=<host> npm run build
+
 
 # ORIGINAL PART OF GENERATED DOCUMENTATION
 

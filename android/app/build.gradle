@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 
+def webAppUrlPrefix = "file:///android_asset/web-app"
+def webAppDir = "$projectDir/../../web-app"
+
 android {
+    signingConfigs {
+        selfSigned {
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -15,15 +22,50 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "webAppUrl", "\"$webAppUrlPrefix/index.html\"")
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+            buildConfigField("String", "webAppUrl", '"http://localhost:3002"')
+        }
+
+        debugPrebuilt {
+            applicationIdSuffix ".debugPrebuilt"
+            debuggable true
+            signingConfig signingConfigs.debug
+            buildConfigField("String", "webAppUrl", "\"$webAppUrlPrefix/index.html\"")
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
+}
+
+task webAppBuild(type: Exec) {
+    inputs.file("$webAppDir/package.lock.json")
+    inputs.dir("$webAppDir/public")
+    inputs.dir("$webAppDir/src")
+
+    outputs.dir("$webAppDir/build")
+
+    workingDir webAppDir
+    environment('PUBLIC_URL', "$webAppUrlPrefix")
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', '"node_modules\\.bin\\react-scripts build"'
+    } else {
+        commandLine './node_modules/.bin/react-scripts build'
+    }
+}
+
+task webAppSync(type: Sync, dependsOn: 'webAppBuild') {
+    from "$webAppDir/build"
+    into "$projectDir/src/main/assets/web-app"
 }
