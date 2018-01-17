@@ -16,4 +16,14 @@
         android:id="@+id/activity_main_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/activity_main_refresh_btn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:drawableStart="@drawable/ic_refresh_black_48dp"
+        android:background="@android:color/transparent"
+        android:visibility="invisible"
+        android:longClickable="true"/>
 </RelativeLayout>

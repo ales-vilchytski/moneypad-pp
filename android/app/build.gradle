@@ -23,12 +23,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("String", "webAppUrl", "\"$webAppUrlPrefix/index.html\"")
+            buildConfigField("Boolean", "webAppRefreshBtnEnabled", "false")
         }
 
         debug {
             applicationIdSuffix ".debug"
             debuggable true
             buildConfigField("String", "webAppUrl", '"http://localhost:3002"')
+            buildConfigField("Boolean", "webAppRefreshBtnEnabled", "true")
         }
 
         debugPrebuilt {
@@ -36,6 +38,7 @@ android {
             debuggable true
             signingConfig signingConfigs.debug
             buildConfigField("String", "webAppUrl", "\"$webAppUrlPrefix/index.html\"")
+            buildConfigField("Boolean", "webAppRefreshBtnEnabled", "false")
         }
     }
 }

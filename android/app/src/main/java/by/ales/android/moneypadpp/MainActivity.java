@@ -5,12 +5,15 @@ import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
+    private Button refreshBtn;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -30,8 +33,14 @@ public class MainActivity extends AppCompatActivity {
                 WebView.setWebContentsDebuggingEnabled(true);
             }
             webSettings.setDomStorageEnabled(true);
-        } else {
-            throw new RuntimeException("Unsupported android version (KitKat and above)");
+        } else { // for sure
+            throw new RuntimeException("Unsupported android version (needs KitKat and above)");
+        }
+
+        refreshBtn = (Button) findViewById(R.id.activity_main_refresh_btn);
+        if (BuildConfig.webAppRefreshBtnEnabled) {
+            refreshBtn.setVisibility(View.VISIBLE);
+            refreshBtn.setOnLongClickListener(new RefreshButtonLongClickListener());
         }
     }
 
@@ -44,4 +53,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    class RefreshButtonLongClickListener implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            if (webView != null) {
+                webView.reload();
+            }
+            return true;
+        }
+    }
 }
