@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import './App.css';
 import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
-import ExpensesListPage from '../expenses/ExpensesListPage'
-import ExpensesAddPage from '../expenses/ExpensesAddPage'
 import { SoftKeyboardShownDetector } from '../components/PlatformSpecificComponents'
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+import Toolbar from 'material-ui/Toolbar';
+import AppMenu from './AppMenu'
+import ExpensesAddPage from '../expenses/ExpensesAddPage'
+import ExpensesListPage from '../expenses/ExpensesListPage'
 
 import logo from '../assets/logo.svg';
-import './App.css';
 
 function RedirectToRoot() {
     return <Redirect to="/expenses_list"/>
@@ -46,6 +51,21 @@ class App extends Component {
                     <h2>
                         SoftKeyboardShown: {String(this.props.appState.softKeyBoardShown)}
                     </h2>
+
+                    <AppBar position="static">
+                        <Toolbar>
+                            <IconButton color="contrast" aria-label="Menu"
+                                        onClick={() => this.props.appState.appMenuOpen = true}>
+                                <MenuIcon />
+                            </IconButton>
+                            <span>
+                                Title
+                            </span>
+                        </Toolbar>
+                    </AppBar>
+                    <AppMenu open={this.props.appState.appMenuOpen}
+                             onClose={() => this.props.appState.appMenuOpen = false}
+                             onItemClick={() => this.props.appState.appMenuOpen = false}/>
                 </div>
             </Router>
         );

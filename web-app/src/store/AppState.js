@@ -4,7 +4,8 @@ class AppState {
 
     constructor() {
         extendObservable(this, {
-            softKeyBoardShown: false
+            softKeyBoardShown: false,
+            appMenuOpen: false
         })
     }
 
