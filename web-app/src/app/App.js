@@ -2,33 +2,22 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
-import ExpensesListPage from './expenses_list/ExpensesListPage'
-import ExpensesAddPage from './expenses_add/ExpensesAddPage'
-import AppState from './state/AppState'
-import SoftKeyboardShownDetectorAndroid from './components/android/SoftKeyboardShownDetectorAndroid'
-import SoftKeyboardShownDetectorPC from './components/pc/SoftKeyboardShownDetectorPC'
-import getPlatform from './utils/platformDetect'
+import ExpensesListPage from '../expenses/ExpensesListPage'
+import ExpensesAddPage from '../expenses/ExpensesAddPage'
+import { SoftKeyboardShownDetector } from '../components/PlatformSpecificComponents'
 
-import logo from './logo.svg';
+import logo from '../assets/logo.svg';
 import './App.css';
 
 function RedirectToRoot() {
     return <Redirect to="/expenses_list"/>
 }
 
-let SoftKeyboardShownDetector;
-let platform = getPlatform();
-console.log("Starting App for platform " + platform);
-if (platform === 'Android') {
-    SoftKeyboardShownDetector = SoftKeyboardShownDetectorAndroid;
-} else {
-    SoftKeyboardShownDetector = SoftKeyboardShownDetectorPC;
-} // TODO: consider to load iOS specific one
 
 class App extends Component {
 
     static propTypes = {
-        appState: PropTypes.instanceOf(AppState).isRequired
+        appState: PropTypes.object
     };
 
     render() {
@@ -63,7 +52,6 @@ class App extends Component {
     }
 
     onSoftKeyboardChanged = (isShown) => {
-        console.log("Keyboard is shown: " + isShown);
         this.props.appState.softKeyBoardShown = isShown;
     }
 

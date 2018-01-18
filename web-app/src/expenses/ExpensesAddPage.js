@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from "mobx-react"
+import './ExpensesAddPage.css'
+import ExpensesList from '../components/ExpensesList'
 
 class ExpensesAddPage extends Component {
 
@@ -13,7 +15,10 @@ class ExpensesAddPage extends Component {
 
     render() {
         return (
-            <div>This is ADD</div>
+            <div className="expenses-add-page">
+                <ExpensesList items={null}/>
+                Form to add/edit
+            </div>
         );
     }
 

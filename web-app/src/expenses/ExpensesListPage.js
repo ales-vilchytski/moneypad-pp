@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import './ExpensesListPage.css'
+import ExpensesList from '../components/ExpensesList'
 
 class ExpensesListPage extends Component {
 
@@ -13,7 +15,10 @@ class ExpensesListPage extends Component {
 
     render() {
         return (
-            <div>This is LIST</div>
+            <div className="expenses-list-page">
+                <ExpensesList items={null}/>
+                List controls
+            </div>
         );
     }
 
