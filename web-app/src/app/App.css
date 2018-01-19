@@ -43,3 +43,9 @@
     font-weight: bold;
   }
 }
+
+
+.app_app-bar {
+  position: fixed;
+  bottom: 0;
+}

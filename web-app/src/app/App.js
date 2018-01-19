@@ -4,8 +4,8 @@ import './App.css';
 import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom'
 import { SoftKeyboardShownDetector } from '../components/PlatformSpecificComponents'
+import classNames from 'classnames'
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import Toolbar from 'material-ui/Toolbar';
 import AppMenu from './AppMenu'
@@ -52,20 +52,18 @@ class App extends Component {
                         SoftKeyboardShown: {String(this.props.appState.softKeyBoardShown)}
                     </h2>
 
-                    <AppBar position="static">
-                        <Toolbar>
-                            <IconButton color="contrast" aria-label="Menu"
-                                        onClick={() => this.props.appState.appMenuOpen = true}>
-                                <MenuIcon />
-                            </IconButton>
-                            <span>
-                                Title
-                            </span>
+                    <AppBar position="static" classes=""
+                            className={classNames({
+                                'hidden': this.props.appState.softKeyBoardShown,
+                                'app_app-bar': true
+                            })}>
+                        <Toolbar classes="">
+                            <MenuIcon onClick={this.handleAppMenuOpen}/>
                         </Toolbar>
                     </AppBar>
                     <AppMenu open={this.props.appState.appMenuOpen}
-                             onClose={() => this.props.appState.appMenuOpen = false}
-                             onItemClick={() => this.props.appState.appMenuOpen = false}/>
+                             onClose={this.handleAppMenuClose}
+                             onItemClick={this.handleAppMenuClose}/>
                 </div>
             </Router>
         );
@@ -73,7 +71,16 @@ class App extends Component {
 
     onSoftKeyboardChanged = (isShown) => {
         this.props.appState.softKeyBoardShown = isShown;
+    };
+
+    handleAppMenuOpen = () => {
+        this.props.appState.appMenuOpen = true
+    };
+
+    handleAppMenuClose = () => {
+        this.props.appState.appMenuOpen = false;
     }
+
 
 }
 
