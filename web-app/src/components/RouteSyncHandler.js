@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 

@@ -1,0 +1,30 @@
+.app-menu_link,
+.app-menu_link__active {
+    text-decoration: none;
+    color: #000;
+    font-weight: 400;
+}
+
+.app-menu_link__active {
+    pointer-events: none;
+    cursor: default;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.app-menu_link {
+    cursor: pointer;
+}
+
+.app-menu_link-item,
+.app-menu_link-item__icon {
+    font-weight: 500;
+    padding-left: 56px;
+}
+
+.app-menu_link-item__icon {
+    padding-left: 16px;
+}
+
+.app-menu_link-icon-wrapper {
+    margin-right: 0;
+}

@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './App.css';
 import { observer } from 'mobx-react'
@@ -20,21 +20,20 @@ const modalRoutes = {
 };
 
 function RedirectToRoot() {
-    return <Redirect to="/expenses_list"/>
+    return <Redirect to="/expenses_list" push={false}/>
 }
 
 class RootModalSwitch extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
-        appState: PropTypes.object.isRequired
+        appState: PropTypes.object.isRequired,
+        prevHist: PropTypes.object.isRequired
     };
-
-    previousLocation = this.props.history.location;
 
     componentWillReceiveProps(nextProps) {
         const { location } = this.props.history;
         if (nextProps.history.action !== 'POP' && !modalRoutes[location.pathname]) {
-            this.previousLocation = location
+            this.props.prevHist.location = location
         }
     }
 
@@ -42,15 +41,23 @@ class RootModalSwitch extends Component {
         const { location } = this.props.history;
         const isModal = !!(
             modalRoutes[location.pathname] &&
-            this.previousLocation !== location // not initial render
+            this.props.prevHist.location !== location // not initial render
         );
 
         return (
             <div>
-                <Switch location={isModal ? this.previousLocation : location}>
+                <Switch location={isModal ? this.props.prevHist.location : location}>
                     <Route exact path="/" component={RedirectToRoot}/>
                     <Route path="/expenses_list" component={ExpensesListPage}/>
                     <Route path="/expenses_add" component={ExpensesAddPage}/>
+
+                    {Object.keys(modalRoutes).map((route) => {
+                        return (
+                            modalRoutes[route]
+                                ? <Route key={route} path={route} component={RedirectToRoot}/>
+                                : null
+                        );
+                    })}
                 </Switch>
                 <Route path="/app_menu" component={this.AppMenuRouteHandler}/>
             </div>
@@ -70,6 +77,10 @@ class App extends Component {
 
     static propTypes = {
         appState: PropTypes.object.isRequired
+    };
+
+    prevHist = {
+        location: this.props.history.location
     };
 
     render() {
@@ -111,8 +122,9 @@ class App extends Component {
                         </Toolbar>
                     </AppBar>
                     <AppMenu open={this.props.appState.appMenuOpen}
-                             onClose={this.handleAppMenuClose}
-                             onItemClick={this.handleAppMenuClose}/>
+                             currentPath={this.props.history.location.pathname}
+                             location={this.prevHist.location}
+                             onClose={this.handleAppMenuClose}/>
 
                 </div>
             </Router>
@@ -120,7 +132,9 @@ class App extends Component {
     }
 
     RootModalSwitchComponent = (props) => {
-        return <RootModalSwitch history={props.history} appState={this.props.appState} />;
+        return <RootModalSwitch history={props.history}
+                                appState={this.props.appState}
+                                prevHist={this.prevHist} />;
     };
 
     onSoftKeyboardChanged = (isShown) => {

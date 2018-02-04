@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { MenuItem } from 'material-ui/Menu'
+import './AppMenu.css'
+import MenuItem from 'material-ui/Menu/MenuItem'
+import { ListItemText, ListItemIcon } from 'material-ui/List'
 import Drawer from 'material-ui/Drawer'
+import { NavLink } from 'react-router-dom'
+import ListIcon from 'material-ui-icons/List'
+import AddIcon from 'material-ui-icons/PlaylistAdd'
 
 const props = {
     transition: {
@@ -13,17 +18,18 @@ const props = {
     }
 };
 
+const routes = [
+    { to: '/expenses_list', label: 'List', icon: ListIcon },
+    { to: '/expenses_add', label: 'Add', icon: AddIcon }
+];
+
 class AppMenu extends PureComponent {
 
     static propTypes = {
         open: PropTypes.bool.isRequired,
-        onItemClick: PropTypes.func,
+        location: PropTypes.object.isRequired,
         onClose: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         let { open } = this.props;
@@ -36,17 +42,29 @@ class AppMenu extends PureComponent {
                     anchor={'bottom'}
                     onClose={this.handleClose}>
 
-                <MenuItem onClick={this.handleClick}>Item 1</MenuItem>
-                <MenuItem onClick={this.handleClick}>Item 2</MenuItem>
+                {routes.map((route, i) => {
+                    let Icon = route['icon'];
+                    return (
+                        <NavLink key={i}
+                                 to={route['to']}
+                                 className="app-menu_link"
+                                 activeClassName="app-menu_link__active"
+                                 replace={true}
+                                 location={this.props.location}>
+                            <MenuItem className={route['icon'] ? "app-menu_link-item__icon" : "app-menu_link-item"}>
+                                {route['icon'] &&
+                                    <ListItemIcon className="app-menu_link-icon-wrapper">
+                                        <Icon/>
+                                    </ListItemIcon>
+                                }
+                                <ListItemText primary={route['label']} />
+                            </MenuItem>
+                        </NavLink>
+                    );
+                })}
             </Drawer>
         );
     }
-
-    handleClick = () => {
-        if (this.props.onItemClick) {
-            this.props.onItemClick();
-        }
-    };
 
     handleClose = (e, reason) => {
         if (this.props.onClose) {
