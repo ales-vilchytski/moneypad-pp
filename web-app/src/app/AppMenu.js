@@ -3,6 +3,16 @@ import PropTypes from 'prop-types'
 import { MenuItem } from 'material-ui/Menu'
 import Drawer from 'material-ui/Drawer'
 
+const props = {
+    transition: {
+        enter: 200,
+        exit: 150
+    },
+    modal: {
+        keepMounted: true
+    }
+};
+
 class AppMenu extends PureComponent {
 
     static propTypes = {
@@ -18,10 +28,13 @@ class AppMenu extends PureComponent {
     render() {
         let { open } = this.props;
 
+        // TODO: Drawer may be slow on mobile
         return (
             <Drawer open={!!open}
+                    transitionDuration={props.transition}
+                    ModalProps={props.modal}
                     anchor={'bottom'}
-                    onRequestClose={this.handleClose}>
+                    onClose={this.handleClose}>
 
                 <MenuItem onClick={this.handleClick}>Item 1</MenuItem>
                 <MenuItem onClick={this.handleClick}>Item 2</MenuItem>
@@ -35,7 +48,7 @@ class AppMenu extends PureComponent {
         }
     };
 
-    handleClose = () => {
+    handleClose = (e, reason) => {
         if (this.props.onClose) {
             this.props.onClose();
         }

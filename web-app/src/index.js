@@ -9,16 +9,18 @@ import App from './app/App';
 import registerServiceWorker from './registerServiceWorker';
 
 import AppState from './store/AppState'
+import { createBrowserHistory } from 'history'
 
 const jss = create(jssPreset());
 jss.options.insertionPoint = 'insertion-point-jss';
 jss.options.createGenerateClassName = createGenerateClassName;
 
 const appState = new AppState();
+const history = createBrowserHistory();
 
 ReactDOM.render(
     <JssProvider jss={jss}>
-        <App appState={appState} />
+        <App appState={appState} history={history} location={history.location} />
     </JssProvider>,
     document.getElementById('root'));
 registerServiceWorker();
