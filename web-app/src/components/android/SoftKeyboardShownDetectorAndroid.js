@@ -27,7 +27,7 @@ class SoftKeyboardShownDetectorAndroid extends PureComponent {
 
     _onWindowResize = () => {
         let isShown = false;
-        if (window.innerHeight  < this._initialWindowHeight) {
+        if (window.innerHeight < this._initialWindowHeight) {
             isShown = true;
         }
         this.props.onSoftKeyBoardChanged(isShown);

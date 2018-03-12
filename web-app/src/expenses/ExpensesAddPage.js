@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from "mobx-react"
 import './ExpensesAddPage.css'
-import ExpensesList from '../components/ExpensesList'
+import ExpensesList from './components/ExpensesList'
 
 class ExpensesAddPage extends Component {
 
@@ -17,9 +17,18 @@ class ExpensesAddPage extends Component {
         return (
             <div className="expenses-add-page">
                 <ExpensesList items={null}/>
-                Form to add/edit
+                <form className="expenses-add-page_form"
+                      action="#" onSubmit={this.onSubmit}>
+                    <textarea className="expenses-add-page_textarea"
+                              autoFocus={true}/>
+                </form>
             </div>
         );
+    }
+
+    onSubmit = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
     }
 
 }

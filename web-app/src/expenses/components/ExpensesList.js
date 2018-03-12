@@ -11,7 +11,6 @@ class ExpensesList extends PureComponent {
     render() {
         return (
             <div className="expenses-list">
-                This will be a list of expenses
             </div>
         );
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './App.css';
 import { observer } from 'mobx-react'
-import { Router, Switch, Route, Link, Redirect } from 'react-router-dom'
+import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import { SoftKeyboardShownDetector } from '../components/PlatformSpecificComponents'
 import classNames from 'classnames'
 import AppBar from 'material-ui/AppBar';
@@ -13,7 +13,6 @@ import RouteSyncHandler from '../components/RouteSyncHandler'
 import ExpensesAddPage from '../expenses/ExpensesAddPage'
 import ExpensesListPage from '../expenses/ExpensesListPage'
 
-import logo from '../assets/logo.svg';
 
 const modalRoutes = {
     '/app_menu': true
@@ -45,7 +44,10 @@ class RootModalSwitch extends Component {
         );
 
         return (
-            <div>
+            <div className={classNames({
+                     'app_app-switch': true,
+                     'keyboard-shown': this.props.appState.softKeyBoardShown
+                 })}>
                 <Switch location={isModal ? this.props.prevHist.location : location}>
                     <Route exact path="/" component={RedirectToRoot}/>
                     <Route path="/expenses_list" component={ExpensesListPage}/>
@@ -87,35 +89,12 @@ class App extends Component {
         return (
             <Router history={this.props.history}>
                 <div className="App">
-                    <SoftKeyboardShownDetector onSoftKeyBoardChanged={this.onSoftKeyboardChanged}/>
-                    <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo"/>
-                        <h1 className="App-title">Welcome to React</h1>
-                    </header>
-
+                    <SoftKeyboardShownDetector onSoftKeyBoardChanged={this.onSoftKeyboardChanged} />
                     <Route component={this.RootModalSwitchComponent} />
-
-                    <div>
-                        <Link to="/expenses_list">LIST</Link>
-                    </div>
-
-                    <div>
-                        <Link to="/expenses_add">ADD</Link>
-                    </div>
-                    <label>INPUT
-                      <input type="text"/>
-                    </label>
-                    <h2>
-                        SoftKeyboardShown: {String(this.props.appState.softKeyBoardShown)}
-                    </h2>
-                    <h2>
-                        Menu: {String(this.props.appState.appMenuOpen)}
-                    </h2>
-
                     <AppBar position="static"
                             className={classNames({
-                                'hidden': this.props.appState.softKeyBoardShown,
-                                'app_app-bar': true
+                                'app_app-bar': true,
+                                'hidden': this.props.appState.softKeyBoardShown
                             })}>
                         <Toolbar>
                             <MenuIcon onClick={this.handleAppMenuOpen}/>

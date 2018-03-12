@@ -1,3 +1,15 @@
 .expenses-add-page {
+    height: 100%;
+}
 
+.expenses-add-page_form {
+    height: 100%;
+}
+
+.expenses-add-page_textarea {
+    height: calc(100% - 8px);
+    width: calc(100% - 8px);
+    padding: 4px;
+    border: none;
+    font-size: 15px;
 }

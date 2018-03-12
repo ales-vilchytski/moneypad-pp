@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './ExpensesListPage.css'
-import ExpensesList from '../components/ExpensesList'
+import ExpensesList from './components/ExpensesList'
 
 class ExpensesListPage extends Component {
 
